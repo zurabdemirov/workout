@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 
-import {startLoading, stopLoading} from '../../store'
+import {startLoading, stopLoading, updateUser} from '../../store'
 
 import style from './example.module.scss';
 
+
+const[valueName,setValueName] = useState("");
+const[valueEmail,setValueEmail] = useState("");
+const[object,setObject] = useState({});
 interface Example {
     startLoading: (data: boolean) => void;
     stopLoading: (data: boolean) => void;
@@ -13,7 +17,6 @@ interface Example {
         name: string;
         email: string;
     };
-    value: string;
 }
 
 interface IState {
@@ -23,7 +26,6 @@ interface IState {
             name: string;
             email: string;
         };
-        value: string;
     }
 }
 
@@ -37,12 +39,19 @@ const Example = (props: Example) => {
 
 
 
-    const onSubmit = () => {
-        console.log(11111)
+    const buttonClick = (setValueName,setValueEmail) => {
+        const newObject = {
+            name:setValueName,
+            email:setValueEmail
+        }
+        
     }
     
-    const onchangeName = (e: any) => {
-        console.log(e);
+    function onchangeName(e: any){
+        setValueName(e.target.value);
+    }
+    function onchangeEmail(e: any){
+        setValueEmail(e.target.value);
     }
 
     return (
@@ -50,9 +59,9 @@ const Example = (props: Example) => {
             <button onClick={start}>startLoading</button>
             {props.loading ? 'Loading...' : 'Start'}
 
-            <input type = "text" value = {props.value} onChange = {onchangeName}
-            />
-            {/* <input type="email" onChange={onchangeEmail}/> */}
+            <input type = "text" value={valueName} onChange={onchangeName}/>
+            <input type = "email" value={valueEmail} onChange={onchangeEmail}/>
+            <button onClick={buttonClick}>click</button>
         </div>
     );
 }
@@ -68,5 +77,6 @@ export default connect(
     (dispatch) => ({
         startLoading: (data: boolean) => dispatch(startLoading(data)),
         stopLoading: (data: boolean) => dispatch(stopLoading(data)),
+        updateUser: (data: string) => dispatch(stopLoading(data)),
     }),
 )(Example);
